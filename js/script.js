@@ -168,45 +168,44 @@
 // })
 
 
+// tugma bosilganda 
+const wrapper = document.querySelector(`.wrapper`);
+const fetchDataBtn = document.getElementById(`fetchDataBtn`);
 
-const wrapper=document.querySelector(`.wrapper`)
 function createCard(value) {
-    return`
+    return `
     <div class="card">
         <h3 id="name">${value.username}</h3>
-        <h3 id="emile">${value.id}</h3>
+        <h3 id="email">${value.id}</h3>
         <h3 id="id">${value.email}</h3>
-        <h3 id="id">${value.address}</h3>
-
-        
-      </div>
-    
-    `
+        <h3 id="address">${value.address}</h3>
+    </div>
+    `;
 }
 
-document.addEventListener(`DOMContentLoaded`,function () {
-    fetch("https://jsonplaceholder.typicode.com/users",{
-         method:"GET"
+
+function fetchData() {
+  
+    fetch("https://jsonplaceholder.typicode.com/users", {
+        method: "GET"
     })
+    .then(response => {
+        if (response.status == 200) {
+            return response.json();
+        }
+    })
+    .then(data => {
+        wrapper.innerHTML = ``;
+        data.forEach(element => {
+            let card = createCard(element);
+            wrapper.innerHTML += card;
+        });
+    })
+    .catch(error => {
+        console.log(error);
+    });
    
+}
 
-.then(response =>{
-    if (response.status == 200) {
-        return response.json();
-    }
+fetchDataBtn.addEventListener(`click`, fetchData);
 
-})
-.then(data=>{
-    wrapper.innerHTML=``;
- data.forEach(element => {
-    let card=createCard(element);
-    wrapper.innerHTML+=card;
- });
-    
-})
-.catch(eror=>{
-    console.log(eror);
-    
-})
-
-})
